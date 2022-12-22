@@ -1,13 +1,18 @@
+$main-color: green;
+$btn-text-color: white;
+$p-text-color: blue;
+
 .hello-world-button {
   font-size: 20px;
   padding: 7px 15px;
-  background: green;
-  color: white;
+  background: $main-color;
+  color: $btn-text-color;
   outline: none;
   border: 0;
   border-radius: 0.2rem;
 }
 
 .hello-world-text {
+  color: $p-text-color;
   font-weight: bold;
 }
