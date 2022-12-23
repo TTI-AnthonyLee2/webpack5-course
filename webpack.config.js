@@ -22,6 +22,35 @@ module.exports = {
       {
         test: /\.txt$/,
         type: 'asset/source'
+      },
+      {
+        test: /\.scss$/,
+        use: [
+          'style-loader',
+          'css-loader',
+          'sass-loader'
+        ]
+      },
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              presets: ['@babel/preset-env'],
+              plugins: [
+                [
+                  // for more information, see: https://babeljs.io/docs/en/babel-plugin-transform-typescript
+                  '@babel/plugin-transform-typescript',
+                  {
+                    // specify more options here
+                  }
+                ],
+              ]
+            },
+          },
+        ]
       }
     ]
   }
