@@ -30,6 +30,26 @@ module.exports = {
           'css-loader',
           'sass-loader'
         ]
+      },
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              presets: ['@babel/preset-env'],
+              plugins: [
+                [
+                  '@babel/plugin-transform-typescript',
+                  {
+                    // specify more options here
+                  }
+                ],
+              ]
+            },
+          },
+        ]
       }
     ]
   }
