@@ -41,6 +41,7 @@ module.exports = {
               presets: ['@babel/preset-env'],
               plugins: [
                 [
+                  // for more information, see: https://babeljs.io/docs/en/babel-plugin-transform-typescript
                   '@babel/plugin-transform-typescript',
                   {
                     // specify more options here
