@@ -2,13 +2,14 @@ const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: './src/index.js',
   output: {
     filename: 'bundle.[contenthash].js',
     path: path.resolve(__dirname, './dist'),
-    publicPath: './dist/' // By default, publicPath is set to 'auto' in Webpack 5.
+    publicPath: 'auto' // By default, publicPath is set to 'auto' in Webpack 5.
   },
   mode: 'none',
   module: {
@@ -60,7 +61,7 @@ module.exports = {
   plugins: [
     new TerserPlugin(),
     new MiniCssExtractPlugin({
-      filename: './style.[contenthash].css',
+      filename: 'style.[contenthash].css',
     }),
     new CleanWebpackPlugin({
       // default: ['**/*']
@@ -68,5 +69,12 @@ module.exports = {
         '**/*',
       ]
     }),
+    new HtmlWebpackPlugin({
+      title: 'Hello world',
+      meta: {
+        description: 'something...'
+      },
+      // filename: 'subfolder/custom.html'
+    })
   ]
 };
