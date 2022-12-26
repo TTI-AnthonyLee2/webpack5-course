@@ -1,4 +1,4 @@
-import Heading from './components/hello-world-btn/heading/heading';
+import Heading from './components/heading/heading';
 import HelloWorldBtn from './components/hello-world-btn/hello-world-btn';
 
 const heading = new Heading();
