@@ -1,11 +1,15 @@
 const path = require('path');
+const TerserPlugin = require('terser-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: './src/index.js',
   output: {
-    filename: 'bundle.js',
+    filename: 'bundle.[contenthash].js',
     path: path.resolve(__dirname, './dist'),
-    publicPath: './dist/' // By default, publicPath is set to 'auto' in Webpack 5.
+    publicPath: 'auto' // By default, publicPath is set to 'auto' in Webpack 5.
   },
   mode: 'none',
   module: {
@@ -24,9 +28,9 @@ module.exports = {
         type: 'asset/source'
       },
       {
-        test: /\.scss$/,
+        test: /\.(c|sc|sa)ss$/,
         use: [
-          'style-loader',
+          MiniCssExtractPlugin.loader,
           'css-loader',
           'sass-loader'
         ]
@@ -51,7 +55,29 @@ module.exports = {
             },
           },
         ]
+      },
+      {
+        test: /\.hbs$/,
+        loader: 'handlebars-loader',
       }
     ]
-  }
+  },
+  plugins: [
+    new TerserPlugin(),
+    new MiniCssExtractPlugin({
+      filename: 'style.[contenthash].css',
+    }),
+    new CleanWebpackPlugin({
+      // default: ['**/*']
+      cleanOnceBeforeBuildPatterns: [
+        '**/*',
+      ]
+    }),
+    new HtmlWebpackPlugin({
+      title: 'Hello world',
+      description: 'something...',
+      template: 'src/index.hbs',
+      // filename: 'subfolder/custom.html',
+    })
+  ]
 };
