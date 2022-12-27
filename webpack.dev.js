@@ -10,6 +10,16 @@ module.exports = {
     publicPath: 'auto' // By default, publicPath is set to 'auto' in Webpack 5.
   },
   mode: 'development',
+  devServer: {
+    port: 9000,
+    static: {
+      directory: path.resolve(__dirname, './dist'),
+    },
+    devMiddleware: {
+      writeToDisk: true,
+    },
+    hot: true, // Seems to be enabled by default (?)
+  },
   module: {
     rules: [
       {
