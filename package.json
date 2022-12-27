@@ -4,8 +4,9 @@
   "description": "This is a Readme file.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack"
+    "dev": "webpack --config webpack.dev.js",
+    "build": "webpack --config webpack.prod.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
