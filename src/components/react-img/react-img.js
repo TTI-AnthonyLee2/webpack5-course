@@ -1,4 +1,4 @@
-import reactIcon from '../img/react-icon.png';
+import reactIcon from '../../../img/react-icon.png';
 import './react-img.scss';
 
 class ReactImg {
