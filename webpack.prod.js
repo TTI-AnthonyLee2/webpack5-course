@@ -10,7 +10,7 @@ module.exports = {
     path: path.resolve(__dirname, './dist'),
     publicPath: 'auto' // By default, publicPath is set to 'auto' in Webpack 5.
   },
-  mode: 'development',
+  mode: 'production',
   module: {
     rules: [
       {
