@@ -75,10 +75,20 @@ module.exports = {
       ]
     }),
     new HtmlWebpackPlugin({
+      filename: './hello-world.html',
+      chunks: ['hello-world'],
       title: 'Hello world',
-      description: 'something...',
-      template: 'src/index.hbs',
-      // filename: 'subfolder/custom.html',
-    })
+      description: 'hello world!',
+      template: './src/page-template.hbs',
+      minify: false, // will be 'true' if mode is 'production'
+    }),
+    new HtmlWebpackPlugin({
+      filename: './react.html',
+      chunks: ['react'],
+      title: 'React',
+      description: 'react!',
+      template: './src/page-template.hbs',
+      minify: false,
+    }),
   ]
 };
