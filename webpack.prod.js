@@ -14,6 +14,11 @@ module.exports = {
     publicPath: 'auto' // By default, publicPath is set to 'auto' in Webpack 5.
   },
   mode: 'production',
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+    }
+  },
   module: {
     rules: [
       {
