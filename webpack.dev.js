@@ -3,9 +3,12 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: './src/index.js',
+  entry: {
+    'hello-world': './src/hello-world.js',
+    'react': './src/react.js',
+  },
   output: {
-    filename: 'bundle.js',
+    filename: '[name].bundle.js',
     path: path.resolve(__dirname, './dist'),
     publicPath: 'auto' // By default, publicPath is set to 'auto' in Webpack 5.
   },
@@ -78,10 +81,20 @@ module.exports = {
       ]
     }),
     new HtmlWebpackPlugin({
+      filename: './hello-world.html',
+      chunks: ['hello-world'],
       title: 'Hello world',
-      description: 'something...',
-      template: 'src/index.hbs',
-      // filename: 'subfolder/custom.html',
-    })
+      description: 'hello world!',
+      template: './src/page-template.hbs',
+      minify: false, // will be 'true' if mode is 'production'
+    }),
+    new HtmlWebpackPlugin({
+      filename: './react.html',
+      chunks: ['react'],
+      title: 'React',
+      description: 'react!',
+      template: './src/page-template.hbs',
+      minify: false,
+    }),
   ]
 };
