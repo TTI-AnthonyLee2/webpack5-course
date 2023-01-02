@@ -44,7 +44,7 @@ module.exports = {
   output: {
     filename: '[name].[contenthash].js',
     path: path.resolve(__dirname, './dist'),
-    publicPath: 'auto' // By default, publicPath is set to 'auto' in Webpack 5.
+    publicPath: '/static/' // By default, publicPath is set to 'auto' in Webpack 5.
   },
   mode: 'production',
   optimization: {
