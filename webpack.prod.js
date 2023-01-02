@@ -3,14 +3,55 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+const listOfPages = [
+  {
+    name: 'hello-world',
+    title: 'Hello world',
+    description: 'hello world!'
+  },
+  {
+    name: 'react',
+    title: 'React',
+    description: 'react!'
+  },
+];
+
+const entries = listOfPages.reduce((entries, page) => {
+  const { name } = page;
+  
+  entries[name] = path.resolve(__dirname, `./src/${name}.js`);
+  
+  return entries;
+}, {});
+
+const htmlGenerators = listOfPages.reduce((listOfHtmls, page) => {
+  const { name, title, description } = page;
+  
+  listOfHtmls.push(new HtmlWebpackPlugin({
+    filename: `./${name}.html`,
+    chunks: [name],
+    title: title,
+    description: description,
+    template: './src/page-template.hbs',
+    minify: false,
+  }));
+  
+  return listOfHtmls;
+}, []);
+
 module.exports = {
-  entry: './src/index.js',
+  entry: entries,
   output: {
-    filename: 'bundle.[contenthash].js',
+    filename: '[name].[contenthash].js',
     path: path.resolve(__dirname, './dist'),
     publicPath: 'auto' // By default, publicPath is set to 'auto' in Webpack 5.
   },
   mode: 'production',
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+    }
+  },
   module: {
     rules: [
       {
@@ -63,7 +104,7 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: 'style.[contenthash].css',
+      filename: '[name].[contenthash].css',
     }),
     new CleanWebpackPlugin({
       // default: ['**/*']
@@ -71,11 +112,6 @@ module.exports = {
         '**/*',
       ]
     }),
-    new HtmlWebpackPlugin({
-      title: 'Hello world',
-      description: 'something...',
-      template: 'src/index.hbs',
-      // filename: 'subfolder/custom.html',
-    })
+    ...htmlGenerators,
   ]
 };
