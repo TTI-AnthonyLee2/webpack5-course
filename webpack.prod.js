@@ -3,11 +3,44 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-module.exports = {
-  entry: {
-    'hello-world': './src/hello-world.js',
-    'react': './src/react.js'
+const listOfPages = [
+  {
+    name: 'hello-world',
+    title: 'Hello world',
+    description: 'hello world!'
   },
+  {
+    name: 'react',
+    title: 'React',
+    description: 'react!'
+  },
+];
+
+const entries = listOfPages.reduce((entries, page) => {
+  const { name } = page;
+  
+  entries[name] = path.resolve(__dirname, `./src/${name}.js`);
+  
+  return entries;
+}, {});
+
+const htmlGenerators = listOfPages.reduce((listOfHtmls, page) => {
+  const { name, title, description } = page;
+  
+  listOfHtmls.push(new HtmlWebpackPlugin({
+    filename: `./${name}.html`,
+    chunks: [name],
+    title: title,
+    description: description,
+    template: './src/page-template.hbs',
+    minify: false,
+  }));
+  
+  return listOfHtmls;
+}, []);
+
+module.exports = {
+  entry: entries,
   output: {
     filename: '[name].[contenthash].js',
     path: path.resolve(__dirname, './dist'),
@@ -79,21 +112,6 @@ module.exports = {
         '**/*',
       ]
     }),
-    new HtmlWebpackPlugin({
-      filename: './hello-world.html',
-      chunks: ['hello-world'],
-      title: 'Hello world',
-      description: 'hello world!',
-      template: './src/page-template.hbs',
-      minify: false, // will be 'true' if mode is 'production'
-    }),
-    new HtmlWebpackPlugin({
-      filename: './react.html',
-      chunks: ['react'],
-      title: 'React',
-      description: 'react!',
-      template: './src/page-template.hbs',
-      minify: false,
-    }),
+    ...htmlGenerators,
   ]
 };
