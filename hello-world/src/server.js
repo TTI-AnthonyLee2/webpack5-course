@@ -16,13 +16,6 @@ app.get('/', (req, res) => {
   // res.sendFile(pathToHtmlFile);
 });
 
-app.get('/react/', (req, res) => {
-  const pathToHtmlFile = path.resolve(__dirname, '../dist/react.html');
-  const contentFromHtmlFile = fs.readFileSync(pathToHtmlFile, 'utf-8');
-
-  res.send(contentFromHtmlFile);
-});
-
-app.listen(3000, () => {
-  console.log('Server is running on http://localhost:3000 !');
+app.listen(9001, () => {
+  console.log('Server is running on http://localhost:9001 !');
 })

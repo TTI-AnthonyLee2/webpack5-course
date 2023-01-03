@@ -1,56 +1,25 @@
 const path = require('path');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const listOfPages = [
-  {
-    name: 'hello-world',
-    title: 'Hello world',
-    description: 'hello world!'
-  },
-  {
-    name: 'react',
-    title: 'React',
-    description: 'react!'
-  },
-];
-
-const entries = listOfPages.reduce((entries, page) => {
-  const { name } = page;
-  
-  entries[name] = path.resolve(__dirname, `./src/${name}.js`);
-  
-  return entries;
-}, {});
-
-const htmlGenerators = listOfPages.reduce((listOfHtmls, page) => {
-  const { name, title, description } = page;
-  
-  listOfHtmls.push(new HtmlWebpackPlugin({
-    filename: `./${name}.html`,
-    chunks: [name],
-    title: title,
-    description: description,
-    template: './src/page-template.hbs',
-    minify: false,
-  }));
-  
-  return listOfHtmls;
-}, []);
-
 module.exports = {
-  entry: entries,
+  entry: './src/react.js',
   output: {
-    filename: '[name].[contenthash].js',
+    filename: '[name].bundle.js',
     path: path.resolve(__dirname, './dist'),
     publicPath: '/static/' // By default, publicPath is set to 'auto' in Webpack 5.
   },
-  mode: 'production',
-  optimization: {
-    splitChunks: {
-      chunks: 'all',
-    }
+  mode: 'development',
+  devServer: {
+    port: 9002,
+    static: {
+      directory: path.resolve(__dirname, './dist'),
+    },
+    devMiddleware: {
+      index: 'react.html',
+      writeToDisk: true,
+    },
+    hot: true, // Seems to be enabled by default (?)
   },
   module: {
     rules: [
@@ -64,13 +33,9 @@ module.exports = {
         }
       },
       {
-        test: /\.txt$/,
-        type: 'asset/source'
-      },
-      {
         test: /\.(c|sc|sa)ss$/,
         use: [
-          MiniCssExtractPlugin.loader,
+          'style-loader',
           'css-loader',
           'sass-loader'
         ]
@@ -103,15 +68,18 @@ module.exports = {
     ]
   },
   plugins: [
-    new MiniCssExtractPlugin({
-      filename: '[name].[contenthash].css',
-    }),
     new CleanWebpackPlugin({
       // default: ['**/*']
       cleanOnceBeforeBuildPatterns: [
         '**/*',
       ]
     }),
-    ...htmlGenerators,
+    new HtmlWebpackPlugin({
+      filename: './react.html',
+      title: 'React',
+      description: 'react!',
+      template: './src/page-template.hbs',
+      minify: false,
+    }),
   ]
 };
